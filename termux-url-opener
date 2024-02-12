@@ -2,21 +2,21 @@
 
 url=$1
 
-green='\e[1;32m'
-cyan='\e[1;36m'
-white='\e[1;37m'
-reset='\e[0m'
+green='\033[1;32m'
+cyan='\033[1;36m'
+white='\033[1;37m'
+reset='\033[0m'
 
-printf "\n%s[*]%s Termux Downloader%s" "$cyan" "$white" "$reset"
-printf "%s[!]%s URL: %s%s%s" "$cyan" "$white" "$green" "$url" "$reset"
-printf "%s[!]%s Available Options%s" "$cyan" "$white" "$reset"
-printf "%s%s%s" "$white" "  1: Download mp4 (video)" "$reset"
-printf "%s%s%s" "$white" "  2: Download mkv (video)" "$reset"
-printf "%s%s%s" "$white" "  3: Download mp3 (audio)" "$reset"
-printf "%s%s%s" "$white" "  4: Download mp4 & mp3" "$reset"
-printf "%s%s%s" "$white" "  5: Download mkv & mp3" "$reset"
-printf "%s%s%s" "$white" "  6: Download with wget" "$reset"
-printf "%s%s%s" "$white" "  x: Exit" "$reset"
+printf "\n%s[*]%s Termux Downloader%s\n" "$cyan" "$white" "$reset"
+printf "%s[!]%s URL: %s%s%s\n" "$cyan" "$white" "$green" "$url" "$reset"
+printf "%s[!]%s Available Options%s\n" "$cyan" "$white" "$reset"
+printf "%s%s%s\n" "$white" "  1: Download mp4 (video)" "$reset"
+printf "%s%s%s\n" "$white" "  2: Download mkv (video)" "$reset"
+printf "%s%s%s\n" "$white" "  3: Download mp3 (audio)" "$reset"
+printf "%s%s%s\n" "$white" "  4: Download mp4 & mp3" "$reset"
+printf "%s%s%s\n" "$white" "  5: Download mkv & mp3" "$reset"
+printf "%s%s%s\n" "$white" "  6: Download with wget" "$reset"
+printf "%s%s%s\n" "$white" "  x: Exit" "$reset"
 printf "%s[*]%s Choose an option: " "$cyan" "$white"
 
 read -r option
