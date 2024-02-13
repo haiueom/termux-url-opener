@@ -29,12 +29,6 @@ echo -ne "${white}[${yellow}?${white}] Choose an option${red}:${cyan} "
 read -r option
 echo -e "${bar}"
 
-if [ -z "$option" ] || ! [[ "$option" =~ ^[1-6xX]$ ]]; then
-    echo -e "${white}[${red}!${white}] Invalid option, auto close in 3 seconds${reset}"
-    sleep 3
-    exit
-fi
-
 if [[ "$option" =~ ^[xX]$ ]]; then
     echo -e "${white}[${red}!${white}] Good bye, auto close in 3 seconds${reset}"
     sleep 3
@@ -47,12 +41,12 @@ if [[ "$option" =~ ^[7]$ ]]; then
     case "$url" in
         *twitter.com*)
             cookie="${cookie_path}twitter.txt"
-            ;;
+        ;;
         *)
             echo -e "${white}[${red}!${white}] Cookie not found for this site${reset}"
             sleep 3
             exit
-            ;;
+        ;;
     esac
 fi
 
@@ -86,6 +80,11 @@ case $option in
     ;;
     x)
         echo "bye . . ."
+    ;;
+    *)
+        echo -e "${white}[${red}!${white}] Invalid option, auto close in 3 seconds${reset}"
+        sleep 3
+        exit
     ;;
 esac
 
