@@ -29,17 +29,11 @@ echo -ne "${white}[${yellow}?${white}] Choose an option${red}:${cyan} "
 read -r option
 echo -e "${bar}"
 
-if [[ "$option" =~ ^[xX]$ ]]; then
-    echo -e "${white}[${red}!${white}] Good bye, auto close in 3 seconds${reset}"
-    sleep 3
-    exit
-fi
-
 cookie_path="$HOME/storage/downloads/termux/cookies/"
 
 if [[ "$option" =~ ^[7]$ ]]; then
     case "$url" in
-        *twitter.com*)
+        *twitter.com*|*x.com*)
             cookie="${cookie_path}twitter.txt"
         ;;
         *)
@@ -79,7 +73,9 @@ case $option in
         yt-dlp --cookies "$cookie" -f 'bv[height<=?1080]+ba/b' --merge-output-format 'mp4' "$url"
     ;;
     x)
-        echo "bye . . ."
+        echo -e "${white}[${red}!${white}] Good bye, auto close in 3 seconds${reset}"
+        sleep 3
+        exit
     ;;
     *)
         echo -e "${white}[${red}!${white}] Invalid option, auto close in 3 seconds${reset}"
