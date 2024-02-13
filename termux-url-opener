@@ -5,21 +5,28 @@ url=$1
 green='\033[1;32m'
 cyan='\033[1;36m'
 white='\033[1;37m'
+red='\033[1;31m'
 reset='\033[0m'
+bar="$green—————————————————————————$reset"
 
-printf "\n%s[*]%s Termux Downloader%s\n" "$cyan" "$white" "$reset"
-printf "%s[!]%s URL: %s%s%s\n" "$cyan" "$white" "$green" "$url" "$reset"
-printf "%s[!]%s Available Options%s\n" "$cyan" "$white" "$reset"
-printf "%s%s%s\n" "$white" "  1: Download mp4 (video)" "$reset"
-printf "%s%s%s\n" "$white" "  2: Download mkv (video)" "$reset"
-printf "%s%s%s\n" "$white" "  3: Download mp3 (audio)" "$reset"
-printf "%s%s%s\n" "$white" "  4: Download mp4 & mp3" "$reset"
-printf "%s%s%s\n" "$white" "  5: Download mkv & mp3" "$reset"
-printf "%s%s%s\n" "$white" "  6: Download with wget" "$reset"
-printf "%s%s%s\n" "$white" "  x: Exit" "$reset"
-printf "%s[*]%s Choose an option: " "$cyan" "$white"
+echo -e "\n${cyan}[*]${white} Termux Downloader by ${cyan}haiueom${reset}"
+echo "${bar}"
+echo -e "${cyan}[!]${white} URL${red}:${white} ${green}${url}${reset}"
+echo "${bar}"
+echo -e "${cyan}[!]${white} Available Options${reset}"
+echo -e "${white}  1: Download mp4 (video)${reset}"
+echo -e "${white}  2: Download mkv (video)${reset}"
+echo -e "${white}  3: Download mp3 (audio)${reset}"
+echo -e "${white}  4: Download mp4 & mp3${reset}"
+echo -e "${white}  5: Download mkv & mp3${reset}"
+echo -e "${white}  6: Download with wget${reset}"
+echo -e "${white}  x: Exit${reset}"
+echo "${bar}"
+echo -e "${cyan}[*]${white} Choose an option: "
 
 read -r option
+
+echo -e "${bar}\n"
 
 case $option in
     1)
