@@ -44,7 +44,9 @@ if [[ "$option" =~ ^[7]$ ]]; then
     esac
 fi
 
-echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
+if [[ "$option" =~ ^[1-7]$ ]]; then
+    echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
+fi
 
 case $option in
     1)
@@ -73,14 +75,10 @@ case $option in
         yt-dlp --cookies "$cookie" -f 'bv[height<=?1080]+ba/b' --merge-output-format 'mp4' "$url"
     ;;
     x)
-        echo -e "${white}[${red}!${white}] Good bye, auto close in 3 seconds${reset}"
-        sleep 3
-        exit
+        echo -e "${white}[${red}!${white}] Good bye . . .${reset}"
     ;;
     *)
-        echo -e "${white}[${red}!${white}] Invalid option, auto close in 3 seconds${reset}"
-        sleep 3
-        exit
+        echo -e "${white}[${red}!${white}] Invalid option${reset}"
     ;;
 esac
 
