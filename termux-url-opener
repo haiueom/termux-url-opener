@@ -23,8 +23,10 @@ echo -e "${white} ↳ 5: Download mkv & mp3${reset}"
 echo -e "${white} ↳ 6: Download with wget${reset}"
 echo -e "${white} ↳ x: Exit${reset}"
 echo -e "${bar}"
-read -rp "${white}[${yellow}?${white}] Choose an option${red}:${white} " option
-echo -e "${bar}\n"
+echo -ne "${white}[${yellow}?${white}] Choose an option${red}:${white} "
+read -r option
+echo -e "${bar}"
+echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
 
 case $option in
     1)
