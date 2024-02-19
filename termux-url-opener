@@ -30,8 +30,8 @@ read -r option
 echo -e "${bar}"
 
 cookie_path="$HOME/storage/downloads/termux/cookies/"
-default_config_video="-f 'bv+ba/b'"
-default_config_audio="-f 'ba/b' -x --audio-format 'mp3' --audio-quality 0"
+default_config_video="-f bv+ba/b"
+default_config_audio="-f ba/b -x --audio-format mp3 --audio-quality 0"
 
 case $option in
     1)
