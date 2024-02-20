@@ -22,38 +22,60 @@ echo -e "${white}[${green}+${white}] 3: Download mp3 (audio)${reset}"
 echo -e "${white}[${green}+${white}] 4: Download mp4 (video) and mp3 (audio)${reset}"
 echo -e "${white}[${green}+${white}] 5: Download mkv (video) and mp3 (audio)${reset}"
 echo -e "${white}[${green}+${white}] 6: Download using wget${reset}"
+echo -e "${white}[${green}+${white}] 7: Download mp4 with cookies${reset}"
 echo -e "${white}[${green}+${white}] x: Exit${reset}"
 echo -e "${bar}"
 echo -ne "${white}[${yellow}?${white}] Choose an option${red}:${cyan} "
 read -r option
 echo -e "${bar}"
 
-if [[ "$option" =~ ^[1-6]$ ]]; then
-    echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
-fi
+cookie_path="$HOME/storage/downloads/termux/cookies/"
+default_config_video="-f bv+ba/b"
+default_config_audio="-f ba/b -x --audio-format mp3 --audio-quality 0"
 
 case $option in
     1)
-        yt-dlp -f 'bv[height<=?1080]+ba/b' --merge-output-format 'mp4' "$url"
+        echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
+        yt-dlp "$default_config_video" --merge-output-format 'mp4' "$url"
     ;;
     2)
-        yt-dlp -f 'bv[height<=?1080]+ba/b' --merge-output-format 'mkv' "$url"
+        echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
+        yt-dlp "$default_config_video" --merge-output-format 'mkv' "$url"
     ;;
     3)
-        yt-dlp -f 'ba' -x --audio-format --audio-quality 0 'mp3' "$url"
+        echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
+        yt-dlp "$default_config_audio" "$url"
     ;;
     4)
-        yt-dlp -f 'bv[height<=?1080]+ba/b' --merge-output-format 'mp4' "$url"
-        yt-dlp -f 'ba' -x --audio-format --audio-quality 0 'mp3' "$url"
+        echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
+        yt-dlp "$default_config_video" --merge-output-format 'mp4' "$url"
+        yt-dlp "$default_config_audio" "$url"
     ;;
     5)
-        yt-dlp -f 'bv[height<=?1080]+ba/b' --merge-output-format 'mkv' "$url"
-        yt-dlp -f 'ba' -x --audio-format --audio-quality 0 'mp3' "$url"
+        echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
+        yt-dlp "$default_config_video" --merge-output-format 'mkv' "$url"
+        yt-dlp "$default_config_audio" "$url"
     ;;
     6)
+        echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
         [ -d "$HOME/storage/downloads/termux/wget" ] || mkdir "$HOME/storage/downloads/termux/wget"
         cd "$HOME/storage/downloads/termux/wget" || exit
         wget "$url"
+    ;;
+    7)
+        case "$url" in
+            *twitter.com*|*x.com*)
+            echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
+                cookie="${cookie_path}twitter.txt"
+                yt-dlp "$default_config_video" --cookies "$cookie" --merge-output-format 'mp4' "$url"
+            ;;
+            *)
+                echo -e "${white}[${red}!${white}] Cookie not found for this site${reset}"
+                sleep 3
+                exit
+            ;;
+        esac
+
     ;;
     x)
         echo -e "${white}[${red}!${white}] Good bye . . .${reset}"
