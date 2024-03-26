@@ -19,10 +19,10 @@ echo -e "${white}[${blue}!${white}] Available Options${reset}"
 echo -e "${white}[${green}+${white}] 1: Download mp4 (video)${reset}"
 echo -e "${white}[${green}+${white}] 2: Download mkv (video)${reset}"
 echo -e "${white}[${green}+${white}] 3: Download mp3 (audio)${reset}"
-echo -e "${white}[${green}+${white}] 4: Download mp4 (video) and mp3 (audio)${reset}"
-echo -e "${white}[${green}+${white}] 5: Download mkv (video) and mp3 (audio)${reset}"
+echo -e "${white}[${green}+${white}] 4: Download using yt-dlp${reset}"
+echo -e "${white}[${green}+${white}] 5: Download using curl${reset}"
 echo -e "${white}[${green}+${white}] 6: Download using wget${reset}"
-echo -e "${white}[${green}+${white}] 7: Download mp4 with cookies${reset}"
+echo -e "${white}[${green}+${white}] 7: Download with cookies${reset}"
 echo -e "${white}[${green}+${white}] x: Exit${reset}"
 echo -e "${bar}"
 echo -ne "${white}[${yellow}?${white}] Choose an option${red}:${cyan} "
@@ -30,31 +30,29 @@ read -r option
 echo -e "${bar}"
 
 cookie_path="$HOME/storage/downloads/termux/cookies/"
-default_config_video="-f bv+ba/b"
-default_config_audio="-f ba/b -x --audio-format mp3 --audio-quality 0"
 
 case $option in
     1)
         echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
-        yt-dlp "$default_config_video" --merge-output-format 'mp4' "$url"
+        yt-dlp --merge-output-format 'mp4' "$url"
     ;;
     2)
         echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
-        yt-dlp "$default_config_video" --merge-output-format 'mkv' "$url"
+        yt-dlp --merge-output-format 'mkv' "$url"
     ;;
     3)
         echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
-        yt-dlp "$default_config_audio" "$url"
+        yt-dlp -f ba/b -x --audio-format mp3 --audio-quality 0 "$url"
     ;;
     4)
         echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
-        yt-dlp "$default_config_video" --merge-output-format 'mp4' "$url"
-        yt-dlp "$default_config_audio" "$url"
+        yt-dlp "$url"
     ;;
     5)
         echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
-        yt-dlp "$default_config_video" --merge-output-format 'mkv' "$url"
-        yt-dlp "$default_config_audio" "$url"
+        [ -d "$HOME/storage/downloads/termux/curl" ] || mkdir "$HOME/storage/downloads/termux/curl"
+        cd "$HOME/storage/downloads/termux/curl" || exit
+        curl -LO "$url"
     ;;
     6)
         echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
@@ -65,17 +63,16 @@ case $option in
     7)
         case "$url" in
             *twitter.com*|*x.com*)
-            echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
+                echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
                 cookie="${cookie_path}twitter.txt"
-                yt-dlp "$default_config_video" --cookies "$cookie" --merge-output-format 'mp4' "$url"
+                yt-dlp --cookies "$cookie" "$url"
             ;;
             *)
                 echo -e "${white}[${red}!${white}] Cookie not found for this site${reset}"
+                echo -e "${white}[${red}!${white}] Auto close in 3 seconds . . .${reset}"
                 sleep 3
-                exit
             ;;
         esac
-
     ;;
     x)
         echo -e "${white}[${red}!${white}] Good bye . . .${reset}"
