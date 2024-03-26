@@ -9,14 +9,13 @@ chmod +x "$destination/termux-url-opener"
 termux-fix-shebang "$destination/termux-url-opener"
 
 echo "Setup storage"
-termux-setup-storage
+[ ! -d "$HOME/storage" ] || termux-setup-storage
 
 echo "Updating termux pkg"
-apt update -y
+apt update -y && apt upgrade -y
 
 echo "Installing dependencies"
 apt install python ffmpeg -y
-yes | pip3 install -U pip
 yes | pip3 install -U yt-dlp
 
 echo "Configuring yt-dlp"
