@@ -1,28 +1,36 @@
 #!/bin/bash
 
-echo "Installing termux-url-opener"
-destination="$HOME/bin"
-[ -d "$destination" ] || mkdir "$destination"
-[ -f "$destination/termux-url-opener" ] && rm -f "$destination/termux-url-opener"
-curl -o "$destination/termux-url-opener" "https://raw.githubusercontent.com/haiueom/termux-url-opener/main/termux-url-opener"
-chmod +x "$destination/termux-url-opener"
-termux-fix-shebang "$destination/termux-url-opener"
+green='\033[1;32m'
+cyan='\033[1;36m'
+white='\033[1;37m'
+red='\033[1;31m'
+reset='\033[0m'
+blue='\033[1;34m'
+bar="$green—————————————————————————$reset"
 
-echo "Setup storage"
-[ ! -d "$HOME/storage" ] || termux-setup-storage
+echo -e "\n${bar}"
+echo -e "${white}[${blue}#${white}] Install Termux URL Opener${reset}"
+echo -e "${white}[${blue}#${white}] Script by: ${cyan}haiueom${reset}"
 
-echo "Updating termux pkg"
+echo -e "${bar}"
+echo -e "${white}[${green}+${white}] Cleaning previous installation${reset}"
+[ -d "$HOME/bin" ] || mkdir "$HOME/bin"
+[ -f "$HOME/bin/termux-url-opener" ] && rm -f "$HOME/bin/termux-url-opener"
+
+echo -e "${bar}"
+echo -e "${white}[${green}+${white}] Downloading termux-url-opener${reset}"
+curl -o "$HOME/bin/termux-url-opener" "https://raw.githubusercontent.com/haiueom/termux-url-opener/main/termux-url-opener"
+chmod +x "$HOME/bin/termux-url-opener"
+termux-fix-shebang "$HOME/bin/termux-url-opener"
+
+echo -e "${bar}"
+echo -e "${white}[${green}+${white}] Install dependencies${reset}"
 apt update -y && apt upgrade -y
-
-echo "Installing dependencies"
-apt install python ffmpeg -y
+apt install python ffmpeg wget -y
 yes | pip3 install -U yt-dlp
 
-echo "Configuring yt-dlp"
-config_path="$HOME/.config/yt-dlp/config"
-default_out_dir="$HOME/storage/downloads/termux"
-[ -d "$default_out_dir" ] || mkdir -p "$default_out_dir"
-[ -f "$config_path" ] || mkdir -p "$(dirname "$config_path")"
-echo "--output $default_out_dir/%(title)s.%(ext)s" > "$config_path"
-
-echo "Done!"
+echo -e "${bar}"
+echo -e "${white}[${green}+${white}] Done!${reset}"
+echo -e "${white}[${red}!${white}] Don't forget to:${reset}"
+echo -e "${white}[${red}!${white}] \t-> Run 'termux-setup-storage'${reset}"
+echo -e "${white}[${red}!${white}] \t-> Configure yt-dlp config${reset}"

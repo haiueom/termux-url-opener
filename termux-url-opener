@@ -22,14 +22,11 @@ echo -e "${white}[${green}+${white}] 3: Download mp3 (audio)${reset}"
 echo -e "${white}[${green}+${white}] 4: Download using yt-dlp${reset}"
 echo -e "${white}[${green}+${white}] 5: Download using curl${reset}"
 echo -e "${white}[${green}+${white}] 6: Download using wget${reset}"
-echo -e "${white}[${green}+${white}] 7: Download with cookies${reset}"
 echo -e "${white}[${green}+${white}] x: Exit${reset}"
 echo -e "${bar}"
 echo -ne "${white}[${yellow}?${white}] Choose an option${red}:${cyan} "
 read -r option
 echo -e "${bar}"
-
-cookie_path="$HOME/storage/downloads/termux/cookies/"
 
 case $option in
     1)
@@ -59,20 +56,6 @@ case $option in
         [ -d "$HOME/storage/downloads/termux/wget" ] || mkdir "$HOME/storage/downloads/termux/wget"
         cd "$HOME/storage/downloads/termux/wget" || exit
         wget "$url"
-    ;;
-    7)
-        case "$url" in
-            *twitter.com*|*x.com*)
-                echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
-                cookie="${cookie_path}twitter.txt"
-                yt-dlp --cookies "$cookie" "$url"
-            ;;
-            *)
-                echo -e "${white}[${red}!${white}] Cookie not found for this site${reset}"
-                echo -e "${white}[${red}!${white}] Auto close in 3 seconds . . .${reset}"
-                sleep 3
-            ;;
-        esac
     ;;
     x)
         echo -e "${white}[${red}!${white}] Good bye . . .${reset}"
