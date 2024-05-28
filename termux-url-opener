@@ -31,19 +31,19 @@ case $option in
         echo -ne "${white}[${yellow}?${white}] Use cookie? ${cyan}"
         read -r kuki
 
-        if [ -n "$kuki" ] && [ -f "$HOME/storage/shared/Download/termux/cookies/$kuki.txt" ]; then
+        if [ -n "$kuki" ] && [ -f "$HOME/storage/downloads/termux/cookies/$kuki.txt" ]; then
             echo -e "${white}[${green}✓${white}] Cookie found${reset}"
             echo -e "${white}[${cyan}*${white}] Downloading...${reset}\n"
-            yt-dlp --cookies "$HOME/storage/shared/Download/termux/cookies/$kuki.txt" "$url"
+            yt-dlp -f b --cookies "$HOME/storage/downloads/termux/cookies/$kuki.txt" "$url"
         else
             echo -e "${white}[${red}!${white}] Cookie not found${reset}"
             echo -e "${white}[${cyan}*${white}] Downloading...${reset}\n"
-            yt-dlp "$url"
+            yt-dlp -f b "$url"
         fi
     ;;
     2)
         echo -e "${white}[${cyan}*${white}] Downloading...${reset}\n"
-        yt-dlp -f ba/b -x --audio-format mp3 --audio-quality 0 "$url"
+        yt-dlp -f "ba[ext=m4a]/ba[ext=webm]/b" -x --audio-format mp3 --audio-quality 0 "$url"
     ;;
     3)
         echo -e "${white}[${cyan}*${white}] Downloading...${reset}\n"
