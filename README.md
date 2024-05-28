@@ -31,7 +31,7 @@ echo "--no-mtime" > $HOME/.config/yt-dlp/config
 echo "-o $HOME/storage/shared/Download/termux/%(title)s.%(ext)s" >> $HOME/.config/yt-dlp/config
 ```
 
-Then you can use the script by share a link to termux or run **this** in your _termux app_.
+Then you can use the script by share a link to termux.
 
 ## How to Update
 
@@ -46,9 +46,10 @@ curl https://raw.githubusercontent.com/haiueom/termux-url-opener/main/update.sh 
 If you want to use cookies, you should copy cookies as Netscape HTTP format and put your cookies in `$HOME/storage/shared/Download/termux/cookies`.
 
 You can use this Chrome extension to export cookies as Netscape HTTP format:
-- [EditThisCookie](https://chromewebstore.google.com/detail/fngmhnnpilhplaeedifhccceomclgfbg)
-- [Get cookies.txt LOCALLY](https://chromewebstore.google.com/detail/cclelndahbckbenkjhflpdbgdldlbecc)
-- or you can use another extension that can export cookies as Netscape HTTP format.
+
+-   [EditThisCookie](https://chromewebstore.google.com/detail/fngmhnnpilhplaeedifhccceomclgfbg)
+-   [Get cookies.txt LOCALLY](https://chromewebstore.google.com/detail/cclelndahbckbenkjhflpdbgdldlbecc)
+-   or you can use another extension that can export cookies as Netscape HTTP format.
 
 example: `$HOME/storage/shared/Download/termux/instagram.txt`
 
