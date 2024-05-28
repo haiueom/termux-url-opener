@@ -16,43 +16,43 @@ echo -e "${bar}"
 echo -e "${white}[${blue}#${white}] URL${red}:${white} ${cyan}${url}${reset}"
 echo -e "${bar}"
 echo -e "${white}[${blue}!${white}] Available Options${reset}"
-echo -e "${white}[${green}+${white}] 1: Download mp4 (video)${reset}"
-echo -e "${white}[${green}+${white}] 2: Download mkv (video)${reset}"
-echo -e "${white}[${green}+${white}] 3: Download mp3 (audio)${reset}"
-echo -e "${white}[${green}+${white}] 4: Download using yt-dlp${reset}"
-echo -e "${white}[${green}+${white}] 5: Download using curl${reset}"
-echo -e "${white}[${green}+${white}] 6: Download using wget${reset}"
+echo -e "${white}[${green}+${white}] 1: Download using yt-dlp${reset}"
+echo -e "${white}[${green}+${white}] 2: Download mp3 (yt-dlp)${reset}"
+echo -e "${white}[${green}+${white}] 3: Download using curl${reset}"
+echo -e "${white}[${green}+${white}] 4: Download using wget${reset}"
 echo -e "${white}[${green}+${white}] x: Exit${reset}"
 echo -e "${bar}"
-echo -ne "${white}[${yellow}?${white}] Choose an option${red}:${cyan} "
+echo -ne "${white}[${yellow}?${white}] Choose an option${red}: ${cyan}"
 read -r option
 echo -e "${bar}"
 
 case $option in
     1)
-        echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
-        yt-dlp --merge-output-format 'mp4' "$url"
+        echo -ne "${white}[${yellow}?${white}] Use cookie? ${cyan}"
+        read -r kuki
+
+        if [ -n "$kuki" ] && [ -f "$HOME/storage/shared/Download/termux/cookies/$kuki.txt" ]; then
+            echo -e "${white}[${green}✓${white}] Cookie found${reset}"
+            echo -e "${white}[${cyan}*${white}] Downloading...${reset}\n"
+            yt-dlp --cookies "$HOME/storage/shared/Download/termux/cookies/$kuki.txt" "$url"
+        else
+            echo -e "${white}[${red}!${white}] Cookie not found${reset}"
+            echo -e "${white}[${cyan}*${white}] Downloading...${reset}\n"
+            yt-dlp "$url"
+        fi
     ;;
     2)
-        echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
-        yt-dlp --merge-output-format 'mkv' "$url"
-    ;;
-    3)
-        echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
+        echo -e "${white}[${cyan}*${white}] Downloading...${reset}\n"
         yt-dlp -f ba/b -x --audio-format mp3 --audio-quality 0 "$url"
     ;;
-    4)
-        echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
-        yt-dlp "$url"
-    ;;
-    5)
-        echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
+    3)
+        echo -e "${white}[${cyan}*${white}] Downloading...${reset}\n"
         [ -d "$HOME/storage/downloads/termux/curl" ] || mkdir "$HOME/storage/downloads/termux/curl"
         cd "$HOME/storage/downloads/termux/curl" || exit
         curl -LO "$url"
     ;;
-    6)
-        echo -e "${white}[${green}*${white}] Downloading...${reset}\n"
+    4)
+        echo -e "${white}[${cyan}*${white}] Downloading...${reset}\n"
         [ -d "$HOME/storage/downloads/termux/wget" ] || mkdir "$HOME/storage/downloads/termux/wget"
         cd "$HOME/storage/downloads/termux/wget" || exit
         wget "$url"
