@@ -8,7 +8,7 @@ echo -e "———————————————————————�
 echo -e "[+] Install dependencies\n"
 pkg i python ffmpeg -y
 yes | pip install -U --no-deps yt-dlp
-yes | pip install -U spotdl
+yes | pip install -U --no-deps spotdl
 echo -e "—————————————————————————"
 echo -e "[+] Install termux-url-opener\n"
 mkdir -p "$HOME/bin"

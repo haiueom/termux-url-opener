@@ -11,7 +11,7 @@ echo -e "———————————————————————�
 echo -e "[+] Update dependencies\n"
 pkg i python ffmpeg -y
 yes | pip install -U --no-deps yt-dlp
-yes | pip install -U spotdl
+yes | pip install -U --no-deps spotdl
 echo -e "—————————————————————————"
 echo -e "[+] Update termux-url-opener\n"
 curl -o "$HOME/bin/termux-url-opener" "https://raw.githubusercontent.com/haiueom/termux-url-opener/main/termux-url-opener"
