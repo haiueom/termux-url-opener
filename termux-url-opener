@@ -1,69 +1,57 @@
 #!/bin/bash
 
+cls
 url=$1
+bar="—————————————————————————"
 
-green='\033[1;32m'
-cyan='\033[1;36m'
-white='\033[1;37m'
-red='\033[1;31m'
-yellow='\033[1;33m'
-reset='\033[0m'
-blue='\033[1;34m'
-bar="$green—————————————————————————$reset"
-
-echo -e "\n${white}[${blue}#${white}] Termux Downloader by ${cyan}haiueom${reset}"
 echo -e "${bar}"
-echo -e "${white}[${blue}#${white}] URL${red}:${white} ${cyan}${url}${reset}"
+echo -e "\n[#] Termux Url Opener"
+echo -e "\n[#] Script by: haiueom"
 echo -e "${bar}"
-echo -e "${white}[${blue}!${white}] Available Options${reset}"
-echo -e "${white}[${green}+${white}] 1: Download using yt-dlp${reset}"
-echo -e "${white}[${green}+${white}] 2: Download mp3 (yt-dlp)${reset}"
-echo -e "${white}[${green}+${white}] 3: Download using curl${reset}"
-echo -e "${white}[${green}+${white}] 4: Download using wget${reset}"
-echo -e "${white}[${green}+${white}] x: Exit${reset}"
+echo -e "[#] URL: ${url}"
 echo -e "${bar}"
-echo -ne "${white}[${yellow}?${white}] Choose an option${red}: ${cyan}"
-read -r option
+echo -e "[1] Download mp4 using yt-dlp"
+echo -e "[2] Download mp3 using yt-dlp"
+echo -e "[3] Download mp3 using spotdl"
+echo -e "[4] Download using curl"
+echo -e "[5] Download using wget"
+echo -e "[x] Exit"
+echo -e "${bar}"
+read -rp "[?] Choose an option: " option
 echo -e "${bar}"
 
 case $option in
     1)
-        echo -ne "${white}[${yellow}?${white}] Use cookie? ${cyan}"
-        read -r kuki
-
-        if [ -n "$kuki" ] && [ -f "$HOME/storage/downloads/termux/cookies/$kuki.txt" ]; then
-            echo -e "${white}[${green}✓${white}] Cookie found${reset}"
-            echo -e "${white}[${cyan}*${white}] Downloading...${reset}\n"
-            yt-dlp -f b --cookies "$HOME/storage/downloads/termux/cookies/$kuki.txt" "$url"
-        else
-            echo -e "${white}[${red}!${white}] Cookie not found${reset}"
-            echo -e "${white}[${cyan}*${white}] Downloading...${reset}\n"
-            yt-dlp -f b "$url"
-        fi
+        echo -e "[*] Downloading...\n"
+        yt-dlp -f b "$url"
     ;;
     2)
-        echo -e "${white}[${cyan}*${white}] Downloading...${reset}\n"
+        echo -e "[*] Downloading...\n"
         yt-dlp -f "ba[ext=m4a]/ba[ext=webm]/b" -x --audio-format mp3 --audio-quality 0 "$url"
     ;;
     3)
-        echo -e "${white}[${cyan}*${white}] Downloading...${reset}\n"
-        [ -d "$HOME/storage/downloads/termux/curl" ] || mkdir "$HOME/storage/downloads/termux/curl"
-        cd "$HOME/storage/downloads/termux/curl" || exit
-        curl -LO "$url"
+        echo -e "[*] Downloading...\n"
+        mkdir -p "$HOME/storage/downloads/termux/spotdl" && cd "$HOME/storage/downloads/termux/spotdl" || exit
+        spotdl download "$url"
     ;;
     4)
-        echo -e "${white}[${cyan}*${white}] Downloading...${reset}\n"
-        [ -d "$HOME/storage/downloads/termux/wget" ] || mkdir "$HOME/storage/downloads/termux/wget"
-        cd "$HOME/storage/downloads/termux/wget" || exit
+        echo -e "[*] Downloading...\n"
+        mkdir -p "$HOME/storage/downloads/termux/curl" && cd "$HOME/storage/downloads/termux/curl" || exit
+        curl -LO "$url"
+    ;;
+    5)
+        echo -e "[*] Downloading...\n"
+        mkdir -p "$HOME/storage/downloads/termux/wget" && cd "$HOME/storage/downloads/termux/wget" || exit
         wget "$url"
     ;;
     x)
-        echo -e "${white}[${red}!${white}] Good bye . . .${reset}"
+        echo -e "[!] Good bye . . ."
     ;;
     *)
-        echo -e "${white}[${red}!${white}] Invalid option${reset}"
+        echo -e "[!] Invalid option"
     ;;
 esac
 
-echo -e "\n${bar}\n${white}[${green}✓${white}] Done! auto close in 3 seconds . . .${reset}\n"
-sleep 3
+echo -e "\n${bar}"
+echo -e "[✓] Done! Press any key to close . . .\n"
+read -n 1 -s -r

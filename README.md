@@ -4,18 +4,34 @@ Simple script for download video and audio using termux.
 
 **Features**:
 
--   download using yt-dlp
--   download using curl
--   download using wget
+-   Download using yt-dlp
+-   Download using spotdl
+-   Download using curl
+-   Download using wget
 
 ## How to Install
 
-Run **this** in your _termux app_.
+### 1. Update termux pkg
 
 ```bash
-pkg update -y && pkg upgrade -y
-pkg install curl -y && curl https://raw.githubusercontent.com/haiueom/termux-url-opener/main/setup.sh | bash
+pkg up -y
 ```
+
+### 2. Install
+
+```bash
+curl https://raw.githubusercontent.com/haiueom/termux-url-opener/main/install.sh | bash
+```
+
+or you can just clone this repository
+
+```bash
+pkg i git -y
+git clone https://github.com/haiueom/termux-url-opener
+sh ~/termux-url-opener/install.sh
+```
+
+### 3. Setup Storage
 
 Then you must run **this** to setup storage termux.
 
@@ -23,41 +39,41 @@ Then you must run **this** to setup storage termux.
 termux-setup-storage
 ```
 
+### 4. Configuration
+
 Then make yt-dlp configuration file to set default output directory or you can make your own configuration.
 
 ```bash
 mkdir -p $HOME/.config/yt-dlp
 echo "--no-mtime" > $HOME/.config/yt-dlp/config
-echo "-o $HOME/storage/shared/Download/termux/%(title)s.%(ext)s" >> $HOME/.config/yt-dlp/config
+echo "-o $HOME/storage/downloads/termux/%(title)s.%(ext)s" >> $HOME/.config/yt-dlp/config
 ```
 
-Then you can use the script by share a link to termux.
+or you can just copy if you clone this repo
+
+```bash
+mkdir -p $HOME/.config/yt-dlp
+cp "$HOME/termux-url-opener/.config/yt-dlp/config" "$HOME/.config/yt-dlp/config"
+```
+
+### 5. Usage
+
+Then you can use the script by share a url to termux or run
+
+```bash
+termux-url-opener [url]
+```
 
 ## How to Update
 
 if you want to update the script, just run **this** in your _termux app_.
 
 ```bash
-curl https://raw.githubusercontent.com/haiueom/termux-url-opener/main/update.sh | bash
+sh ~/termux-url-opener/update.sh
 ```
 
-## How to Use Cookies
+or run this
 
-If you want to use cookies, you should copy cookies as Netscape HTTP format and put your cookies in `$HOME/storage/shared/Download/termux/cookies`.
-
-You can use this Chrome extension to export cookies as Netscape HTTP format:
-
--   [EditThisCookie](https://chromewebstore.google.com/detail/fngmhnnpilhplaeedifhccceomclgfbg)
--   [Get cookies.txt LOCALLY](https://chromewebstore.google.com/detail/cclelndahbckbenkjhflpdbgdldlbecc)
--   or you can use another extension that can export cookies as Netscape HTTP format.
-
-example: `$HOME/storage/shared/Download/termux/instagram.txt`
-
-```text
-# Netscape HTTP Cookie File
-# http://curl.haxx.se/rfc/cookie_spec.html
-# This is a generated file!  Do not edit.
-
-.example.com	TRUE	/	TRUE	1234567890	cookie_name	cookie_value
-.example.com	TRUE	/	TRUE	1234567890	another_cookie	another_value
+```bash
+curl https://raw.githubusercontent.com/haiueom/termux-url-opener/main/update.sh | bash
 ```

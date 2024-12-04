@@ -1,0 +1,8 @@
+# Lines starting with # are comments
+# https://github.com/yt-dlp/yt-dlp#configuration
+
+# Do not copy the mtime
+--no-mtime
+
+# Save all videos under YouTube directory in your home directory
+-o ~/storage/downloads/termux/ytdlp/%(title)s.%(ext)s
