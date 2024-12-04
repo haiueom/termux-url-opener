@@ -1,12 +1,11 @@
 #!/bin/bash
 
-cls
 url=$1
 bar="—————————————————————————"
 
 echo -e "${bar}"
-echo -e "\n[#] Termux Url Opener"
-echo -e "\n[#] Script by: haiueom"
+echo -e "[#] Termux Url Opener"
+echo -e "[#] Script by: haiueom"
 echo -e "${bar}"
 echo -e "[#] URL: ${url}"
 echo -e "${bar}"
