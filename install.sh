@@ -37,11 +37,8 @@ pkg up -y
 pkg install python ffmpeg curl -y
 
 log_step "Step 2: Installing and upgrading Python packages"
-# Upgrade pip itself first, then handle the special pydantic case for Termux,
-# finally install the main tools which lets pip resolve dependencies correctly.
-pip install --upgrade pip setuptools
-pip install --upgrade pydantic --extra-index-url https://termux-user-repository.github.io/pypi/
-pip install --upgrade yt-dlp spotdl
+pip install --upgrade spotdl
+pip install --upgrade --no-deps yt-dlp
 
 log_step "Step 3: Downloading and installing the script"
 # Ensure the installation directory exists
