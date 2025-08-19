@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # --- Configuration ---
 # Add a version number. Remember to increment this when you make changes!
