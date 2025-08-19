@@ -1,79 +1,62 @@
-# termux-url-opener
+# Termux URL Opener
 
-Simple script for download video and audio using termux.
+A versatile command-line tool for Termux that simplifies downloading content from URLs. Whether you need to grab a video, extract audio, or just download a file, this script provides a simple menu to handle it all with popular tools like `yt-dlp`, `spotdl`, `curl`, and `wget`.
 
-**Features**:
+## Features
 
--   Download using yt-dlp
--   Download using spotdl
--   Download using curl
--   Download using wget
+-   **All-in-One Menu**: A simple, interactive menu to choose your download method.
+-   **Video & Audio Downloads**: Easily download videos as MP4 or extract audio as MP3 from various sites using `yt-dlp`.
+-   **Spotify Support**: Download tracks from Spotify URLs using `spotdl`.
+-   **Standard Downloads**: Use `curl` or `wget` for direct file downloads.
+-   **Organized Storage**: Files are automatically saved into organized subdirectories within `~/storage/downloads/termux`.
+-   **Self-Updating**: Includes a built-in command to update the script to the latest version directly from GitHub.
+-   **Dependency Checks**: The script verifies that all required tools are installed before running.
 
-## How to Install
+## Prerequisites
 
-### 1. Update termux pkg
+Before you begin, ensure you have Termux installed on your Android device. The installation script will handle the following dependencies, but here is a list for reference:
 
-```bash
-pkg up -y
-```
+-   `python`
+-   `ffmpeg`
+-   `curl`
+-   `wget`
+-   `yt-dlp` (Python package)
+-   `spotdl` (Python package)
 
-### 2. Install
+## Installation
 
-```bash
-curl https://raw.githubusercontent.com/haiueom/termux-url-opener/main/install.sh | bash
-```
-
-or you can just clone this repository
-
-```bash
-pkg i git -y
-git clone https://github.com/haiueom/termux-url-opener
-sh ~/termux-url-opener/install.sh
-```
-
-### 3. Setup Storage
-
-Then you must run **this** to setup storage termux.
+You can install the tool with a single command. Open your Termux terminal and run the following:
 
 ```bash
-termux-setup-storage
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/haiueom/termux-url-opener/main/install.sh)"
 ```
 
-### 4. Configuration
+This command will:
 
-Then make yt-dlp configuration file to set default output directory or you can make your own configuration.
+1. Update your package lists.
+2. Install all the necessary system and Python dependencies.
+3. Download the main `termux-url-opener` script to `~/bin`.
+4. Make the script executable and available system-wide in Termux.
+
+## Usage
+
+Once installed, you can share an URL to Termux App or use the command line to run the script. The script will present you with a menu of options for downloading content from the provided URL.
+
+From the menu, simply choose the desired download option by typing the corresponding number or letter and pressing Enter.
+
+### Method 1: Share a URL to Termux:
+
+-   Use the share feature from your browser or any app that supports sharing URLs.
+-   Select "Termux" from the list of apps to share with.
+
+### Method 2: Run the script directly from the command line:
+
+-   Open Termux and type the following command:
 
 ```bash
-mkdir -p $HOME/.config/yt-dlp
-echo "--no-mtime" > $HOME/.config/yt-dlp/config
-echo "-o $HOME/storage/downloads/termux/%(title)s.%(ext)s" >> $HOME/.config/yt-dlp/config
+termux-url-opener "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 ```
 
-or you can just copy if you clone this repo
+## Contributing
 
-```bash
-mkdir -p $HOME/.config/yt-dlp
-cp "$HOME/termux-url-opener/.config/yt-dlp/config" "$HOME/.config/yt-dlp/config"
-```
-
-### 5. Usage
-
-Then you can use the script by share a url to termux or run
-
-```bash
-termux-url-opener [url]
-```
-
-## How to Update
-
-if you want to update the script, just run **this** in your _termux app_.
-
-```bash
-sh ~/termux-url-opener/update.sh
-```
-
-or run this
-
-```bash
-curl https://raw.githubusercontent.com/haiueom/termux-url-opener/main/update.sh | bash
-```
+Contributions are welcome! If you have ideas for new features, improvements, or bug fixes, feel free to open an issue or submit a pull request.
