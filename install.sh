@@ -37,8 +37,7 @@ pkg up -y
 pkg install python ffmpeg curl -y
 
 log_step "Step 2: Installing and upgrading Python packages"
-pip install --upgrade spotdl
-pip install --upgrade --no-deps yt-dlp
+pip install --upgrade --no-deps yt-dlp spotdl
 
 log_step "Step 3: Downloading and installing the script"
 # Ensure the installation directory exists
