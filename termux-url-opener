@@ -1,10 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # --- Configuration ---
-# Add a version number. Remember to increment this when you make changes!
-VERSION="2.0"
+# Version bumped to 2.1
+VERSION="2.1"
 DOWNLOAD_DIR="$HOME/storage/downloads/termux"
 UPDATER_URL="https://raw.githubusercontent.com/haiueom/termux-url-opener/main/update.sh"
+
+# Ensure download directory exists
 mkdir -p "$DOWNLOAD_DIR"
 
 # --- Colors ---
@@ -20,16 +22,16 @@ print_header() {
     local bar="========================================="
     echo -e "${BLUE}${bar}${NC}"
     echo -e "${GREEN}[#] Termux URL Downloader (v$VERSION)${NC}"
-    echo -e "${GREEN}[#] Script by: haiueom (Improved Version)${NC}"
+    echo -e "${GREEN}[#] Script by: haiueom${NC}"
     echo -e "${BLUE}${bar}${NC}"
 }
 
 log_message() {
     case "$1" in
-        INFO)   echo -e "${BLUE}[*] $2${NC}" ;;
+        INFO)    echo -e "${BLUE}[*] $2${NC}" ;;
         SUCCESS) echo -e "${GREEN}[✓] $2${NC}" ;;
-        ERROR)  echo -e "${RED}[!] $2${NC}" >&2 ;;
-        WARN)   echo -e "${YELLOW}[?] $2${NC}" ;;
+        ERROR)   echo -e "${RED}[!] $2${NC}" >&2 ;;
+        WARN)    echo -e "${YELLOW}[?] $2${NC}" ;;
     esac
 }
 
@@ -42,37 +44,45 @@ check_dependencies() {
     done
 
     if [ ${#missing_deps[@]} -ne 0 ]; then
-        log_message ERROR "Missing dependencies: ${missing_deps[*]}. Please install them."
-        exit 1
+        log_message WARN "Missing dependencies: ${missing_deps[*]}. Attempting to install..."
+
+        for dep in "${missing_deps[@]}"; do
+            if [[ "$dep" == "yt-dlp" ]]; then
+                # yt-dlp must be installed without deps in Termux to avoid compilation errors
+                log_message INFO "Installing python package: $dep (no-deps)"
+                pip install --no-deps "$dep" || { log_message ERROR "Failed to install $dep."; exit 1; }
+            elif [[ "$dep" == "spotdl" ]]; then
+                log_message INFO "Installing python package: $dep"
+                pip install "$dep" || { log_message ERROR "Failed to install $dep."; exit 1; }
+            else
+                log_message INFO "Installing system package: $dep"
+                pkg install -y "$dep" || { log_message ERROR "Failed to install $dep."; exit 1; }
+            fi
+        done
+        log_message SUCCESS "All dependencies installed."
     fi
 }
 
 # --- Update Function ---
-# This function downloads and runs the external updater script.
 update_script() {
     log_message INFO "Checking for updates..."
-    # Create a temporary file for the updater script
     local updater_script
     updater_script=$(mktemp)
 
-    # Download the updater script
     if ! curl -fLo "$updater_script" "$UPDATER_URL"; then
         log_message ERROR "Could not download the updater script."
         rm -f "$updater_script"
         return 1
     fi
 
-    # Make the updater executable and run it
     chmod +x "$updater_script"
-    # Execute the updater. It will clean up itself on failure, or we clean it up.
+
+    # Executing updater. It will replace this script.
     bash "$updater_script"
 
-    # Clean up the temporary updater script
     rm -f "$updater_script"
-
-    log_message INFO "Update check finished. If an update was installed, please restart the script."
+    log_message INFO "Update check finished."
 }
-
 
 # --- Download Functions ---
 download_mp4_ytdlp() {
@@ -80,7 +90,8 @@ download_mp4_ytdlp() {
     local target_dir="${DOWNLOAD_DIR}/ytdlp_video"
     mkdir -p "$target_dir"
     log_message INFO "Downloading MP4 video to: $target_dir"
-    yt-dlp -f 'b[ext=mp4]/b' --output "$target_dir/%(title)s.%(ext)s" "$url"
+    # Added --restrict-filenames for safer file handling
+    yt-dlp -f 'b[ext=mp4]/b' --restrict-filenames --output "$target_dir/%(title)s.%(ext)s" "$url"
 }
 
 download_mp3_ytdlp() {
@@ -88,7 +99,7 @@ download_mp3_ytdlp() {
     local target_dir="${DOWNLOAD_DIR}/ytdlp_audio"
     mkdir -p "$target_dir"
     log_message INFO "Downloading MP3 audio to: $target_dir"
-    yt-dlp -f "ba[ext=m4a]/ba" -x --audio-format mp3 --audio-quality 0 --output "$target_dir/%(title)s.%(ext)s" "$url"
+    yt-dlp -f "ba[ext=m4a]/ba" -x --audio-format mp3 --audio-quality 0 --restrict-filenames --output "$target_dir/%(title)s.%(ext)s" "$url"
 }
 
 download_mp3_spotdl() {
@@ -104,7 +115,8 @@ download_curl() {
     local target_dir="${DOWNLOAD_DIR}/curl"
     mkdir -p "$target_dir"
     log_message INFO "Downloading with curl to: $target_dir"
-    (cd "$target_dir" && curl --remote-name --location --remote-header-name "$url")
+    # Use subshell to maintain directory context
+    (cd "$target_dir" && curl -fO -L --remote-header-name "$url")
 }
 
 download_wget() {
@@ -116,9 +128,11 @@ download_wget() {
 }
 
 # --- Main Logic ---
+# Auto-check and install dependencies
 check_dependencies yt-dlp spotdl curl wget
 
 url="$1"
+
 if [ -z "$url" ]; then
     print_header
     read -rp "$(echo -e "${YELLOW}Enter the URL to download: ${NC}")" url
@@ -130,7 +144,7 @@ fi
 
 while true; do
     print_header
-    log_message INFO "URL: ${url}"
+    log_message INFO "Target URL: ${url}"
     echo -e "${BLUE}-----------------------------------------${NC}"
     echo " [1] Download mp4  (yt-dlp)"
     echo " [2] Download mp3  (yt-dlp)"
@@ -161,6 +175,6 @@ while true; do
     esac
 
     echo
-    log_message SUCCESS "Task finished."
+    log_message SUCCESS "Operation completed."
     read -n 1 -s -r -p "Press any key to return to the menu..."
 done

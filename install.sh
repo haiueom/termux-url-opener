@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Exit immediately if a command exits with a non-zero status.
 set -e
@@ -21,7 +21,7 @@ print_header() {
     local bar="========================================="
     echo -e "${BLUE}${bar}${NC}"
     echo -e "${GREEN}[#] Installing Termux URL Opener${NC}"
-    echo -e "${GREEN}[#] Script by: haiueom (Improved Version)${NC}"
+    echo -e "${GREEN}[#] Script by: haiueom${NC}"
     echo -e "${BLUE}${bar}${NC}\n"
 }
 
@@ -33,20 +33,29 @@ log_step() {
 print_header
 
 log_step "Step 1: Updating packages and installing system dependencies"
-pkg up -y
-pkg install python ffmpeg curl -y
+# Added rust and binutils because spotdl dependencies (like pydantic-core)
+# often require them for compilation on Termux.
+pkg update -y && pkg upgrade -y
+pkg install python ffmpeg curl wget rust binutils -y
 
-log_step "Step 2: Installing and upgrading Python packages"
-pip install --upgrade --no-deps yt-dlp spotdl
+log_step "Step 2: Installing Python packages"
+# Install yt-dlp WITHOUT dependencies as requested (prevents termux errors)
+pip install --no-deps -U yt-dlp
+
+# Install spotdl WITH dependencies (it needs them to run).
+# Note: This might take a while due to compilation.
+pip install -U spotdl
 
 log_step "Step 3: Downloading and installing the script"
-# Ensure the installation directory exists
 mkdir -p "$INSTALL_DIR"
 echo "Downloading script to $INSTALL_PATH..."
-# Use curl with -f (fail on error), -L (follow redirects), -o (output)
-curl -fLo "$INSTALL_PATH" "$SCRIPT_URL"
-# Make the script executable
-chmod +x "$INSTALL_PATH"
+
+if curl -fLo "$INSTALL_PATH" "$SCRIPT_URL"; then
+    chmod +x "$INSTALL_PATH"
+else
+    echo -e "${RED}[!] Failed to download script. Check internet connection.${NC}"
+    exit 1
+fi
 
 echo -e "\n${GREEN}=========================================${NC}"
 echo -e "${GREEN}[✓] Installation complete!${NC}"
