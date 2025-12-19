@@ -36,7 +36,7 @@ log_step "Step 1: Updating packages and installing system dependencies"
 # Added rust and binutils because spotdl dependencies (like pydantic-core)
 # often require them for compilation on Termux.
 pkg update -y && pkg upgrade -y
-pkg install python ffmpeg curl wget rust binutils -y
+pkg install python ffmpeg curl wget -y
 
 log_step "Step 2: Installing Python packages"
 # Install yt-dlp WITHOUT dependencies as requested (prevents termux errors)
