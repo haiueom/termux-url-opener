@@ -6,11 +6,10 @@ A versatile command-line tool for Termux that simplifies downloading content fro
 
 -   **All-in-One Menu**: A simple, interactive menu to choose your download method.
 -   **Video & Audio Downloads**: Easily download videos as MP4 or extract audio as MP3 from various sites using `yt-dlp`.
+-   **Video Resolution Choice**: Pick a download quality such as best available, 1080p, 720p, 480p, 360p, or enter a custom yt-dlp format.
 -   **Spotify Support**: Download tracks from Spotify URLs using `spotdl`.
 -   **Standard Downloads**: Use `curl` or `wget` for direct file downloads.
 -   **Organized Storage**: Files are automatically saved into organized subdirectories within `~/storage/downloads/termux`.
--   **Self-Updating**: Includes a built-in command to update the script to the latest version directly from GitHub.
--   **Auto-Dependency Installation**: The script automatically detects and attempts to install missing dependencies.
 
 ## Prerequisites
 
