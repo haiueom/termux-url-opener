@@ -27,7 +27,7 @@ Before you begin, ensure you have Termux installed on your Android device. The s
 You can install the tool with a single command. Open your Termux terminal and run the following:
 
 ```bash
-bash -c "$(curl -fsSL [https://raw.githubusercontent.com/haiueom/termux-url-opener/main/install.sh](https://raw.githubusercontent.com/haiueom/termux-url-opener/main/install.sh))"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/haiueom/termux-url-opener/main/install.sh)"
 ```
 
 This command will:
