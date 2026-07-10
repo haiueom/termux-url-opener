@@ -19,7 +19,8 @@ Before you begin, ensure you have Termux installed on your Android device. The s
 -   `ffmpeg`
 -   `curl`
 -   `wget`
--   `yt-dlp` (Python package)
+-   `deno`
+-   `yt-dlp[default]` (Python package)
 -   `spotdl` (Python package)
 
 ## Installation
@@ -36,6 +37,9 @@ This command will:
 2. Install all the necessary system and Python dependencies.
 3. Download the main termux-url-opener script to ~/bin.
 4. Make the script executable.
+5. Add `~/bin` to your `PATH` (in `~/.bashrc`) so you can run `termux-url-opener` from anywhere.
+
+> After installation, restart Termux or run `source ~/.bashrc` for the `PATH` change to take effect.
 
 ## Usage
 Once installed, you can share an URL to Termux App or use the command line to run the script.

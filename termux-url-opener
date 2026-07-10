@@ -33,20 +33,19 @@ print_header() {
 }
 
 choose_video_format() {
-    local ext="$1"
     local option
     local format
 
     while true; do
-        echo -e "${BLUE}-----------------------------------------${NC}"
-        echo " Select video resolution:"
-        echo " [1] Best available"
-        echo " [2] 1080p (FHD)"
-        echo " [3] 720p (HD)"
-        echo " [4] 480p (SD)"
-        echo " [5] 360p (LD)"
-        echo " [6] Custom"
-        echo -e "${BLUE}-----------------------------------------${NC}"
+        echo -e "${BLUE}-----------------------------------------${NC}" >&2
+        echo " Select video resolution:" >&2
+        echo " [1] Best available" >&2
+        echo " [2] 1080p (FHD)" >&2
+        echo " [3] 720p (HD)" >&2
+        echo " [4] 480p (SD)" >&2
+        echo " [5] 360p (LD)" >&2
+        echo " [6] Custom" >&2
+        echo -e "${BLUE}-----------------------------------------${NC}" >&2
         read -rp "$(echo -e "${YELLOW}Choose a resolution option: ${NC}")" option
 
         case $option in
@@ -88,7 +87,7 @@ choose_video_format() {
 download_mp4_ytdlp() {
     local url="$1"
     local format
-    format=$(choose_video_format mp4)
+    format=$(choose_video_format)
     if [ -z "$format" ]; then
         log_message ERROR "No video format selected."
         return 1
@@ -103,7 +102,7 @@ download_mp4_ytdlp() {
 download_mkv_ytdlp() {
     local url="$1"
     local format
-    format=$(choose_video_format mkv)
+    format=$(choose_video_format)
     if [ -z "$format" ]; then
         log_message ERROR "No video format selected."
         return 1

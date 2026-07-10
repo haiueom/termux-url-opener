@@ -13,6 +13,7 @@ INSTALL_PATH="$INSTALL_DIR/$SCRIPT_NAME"
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
+RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 print_header() {
@@ -35,7 +36,7 @@ pkg up -y
 
 log_step "Step 2: Installing dependencies"
 pkg install python ffmpeg curl wget deno -y
-pip install -U --no-deps yt-dlp yt-dlp-ejs spotdl
+pip install -U --no-deps yt-dlp[default] spotdl
 
 log_step "Step 3: Configuring script"
 termux-setup-storage -y
@@ -48,5 +49,17 @@ else
     exit 1
 fi
 
+log_step "Step 4: Adding $INSTALL_DIR to PATH"
+PATH_LINE='export PATH="$HOME/bin:$PATH"'
+SHELL_RC="$HOME/.bashrc"
+if ! grep -qsF "$PATH_LINE" "$SHELL_RC"; then
+    printf '\n# Added by termux-url-opener installer\n%s\n' "$PATH_LINE" >>"$SHELL_RC"
+    echo -e "${GREEN} [✓] Added to $SHELL_RC${NC}"
+else
+    echo -e "${GREEN} [✓] Already on PATH${NC}"
+fi
+
 echo -e "\n${GREEN}=========================================${NC}"
 echo -e "${GREEN} [✓] Installation complete!${NC}"
+echo -e "${YELLOW} [!] Restart Termux or run: source $SHELL_RC${NC}"
+echo -e "${GREEN} [#] Then run: termux-url-opener \"<url>\"${NC}"

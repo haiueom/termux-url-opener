@@ -36,7 +36,7 @@ pkg up -y
 
 log_step "Step 2: Updating dependencies"
 pkg install python ffmpeg curl wget deno -y
-pip install -U --no-deps yt-dlp yt-dlp-ejs spotdl
+pip install -U --no-deps yt-dlp[default] spotdl
 
 log_step "Step 3: Configuring script"
 termux-setup-storage -y
@@ -51,6 +51,16 @@ if curl -fLo "$INSTALL_PATH" "$SCRIPT_URL"; then
 else
     echo -e "${RED} [!] Failed, please try again.${NC}"
     exit 1
+fi
+
+log_step "Step 4: Ensuring $INSTALL_DIR is on PATH"
+PATH_LINE='export PATH="$HOME/bin:$PATH"'
+SHELL_RC="$HOME/.bashrc"
+if ! grep -qsF "$PATH_LINE" "$SHELL_RC"; then
+    printf '\n# Added by termux-url-opener installer\n%s\n' "$PATH_LINE" >>"$SHELL_RC"
+    echo -e "${GREEN} [✓] Added to $SHELL_RC${NC}"
+else
+    echo -e "${GREEN} [✓] Already on PATH${NC}"
 fi
 
 echo -e "\n${GREEN}=========================================${NC}"
