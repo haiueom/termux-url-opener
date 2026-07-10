@@ -154,6 +154,14 @@ download_wget() {
     wget --content-disposition -P "$target_dir" "$url"
 }
 
+download_gallery_dl() {
+    local url="$1"
+    local target_dir="${DOWNLOAD_DIR}/gallery-dl"
+    mkdir -p "$target_dir"
+    log_message INFO "Downloading gallery to: $target_dir"
+    gallery-dl -D "$target_dir" "$url"
+}
+
 url="$1"
 
 if [ -z "$url" ]; then
@@ -169,13 +177,14 @@ while true; do
     print_header
     log_message INFO "Target URL: ${url}"
     echo -e "${BLUE}-----------------------------------------${NC}"
-    echo " [1] Download mp4  (yt-dlp)"
-    echo " [2] Download mkv  (yt-dlp)"
-    echo " [3] Download mp3  (yt-dlp)"
-    echo " [4] Download aac  (yt-dlp)"
-    echo " [5] Download mp3  (spotdl)"
-    echo " [6] Download file (curl)"
-    echo " [7] Download file (wget)"
+    echo " [1] Download mp4     (yt-dlp)"
+    echo " [2] Download mkv     (yt-dlp)"
+    echo " [3] Download mp3     (yt-dlp)"
+    echo " [4] Download aac     (yt-dlp)"
+    echo " [5] Download mp3     (spotdl)"
+    echo " [6] Download img     (gallery-dl)"
+    echo " [7] Download file    (curl)"
+    echo " [8] Download file    (wget)"
     echo -e " [${RED}x${NC}] Exit"
     echo -e "${BLUE}-----------------------------------------${NC}"
 
@@ -188,8 +197,9 @@ while true; do
         3) download_mp3_ytdlp "$url" ;;
         4) download_aac_ytdlp "$url" ;;
         5) download_mp3_spotdl "$url" ;;
-        6) download_curl "$url" ;;
-        7) download_wget "$url" ;;
+        6) download_gallery_dl "$url" ;;
+        7) download_curl "$url" ;;
+        8) download_wget "$url" ;;
         x|X)
             log_message INFO "Goodbye!"
             break

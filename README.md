@@ -8,6 +8,7 @@ A versatile command-line tool for Termux that simplifies downloading content fro
 -   **Video & Audio Downloads**: Easily download videos as MP4 or MKV, or extract audio as MP3/AAC from various sites using `yt-dlp`.
 -   **Video Resolution Choice**: When downloading MP4 or MKV, choose from best available, 1080p, 720p, 480p, 360p, or enter a custom `yt-dlp` format/max-height value.
 -   **Spotify Support**: Download tracks from Spotify URLs using `spotdl`.
+-   **Gallery Downloads**: Grab image galleries and albums from many sites using `gallery-dl`.
 -   **Standard Downloads**: Use `curl` or `wget` for direct file downloads.
 -   **Organized Storage**: Files are automatically saved into organized subdirectories within `~/storage/downloads/termux`.
 
@@ -22,6 +23,7 @@ Before you begin, ensure you have Termux installed on your Android device. The s
 -   `deno`
 -   `yt-dlp[default]` (Python package)
 -   `spotdl` (Python package)
+-   `gallery-dl` (Python package)
 
 ## Installation
 

@@ -36,7 +36,7 @@ pkg up -y
 
 log_step "Step 2: Updating dependencies"
 pkg install python ffmpeg curl wget deno -y
-pip install -U --no-deps yt-dlp[default] spotdl
+pip install -U --no-deps yt-dlp[default] spotdl gallery-dl
 
 log_step "Step 3: Configuring script"
 termux-setup-storage -y
