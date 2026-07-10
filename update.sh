@@ -31,27 +31,40 @@ log_step() {
 
 print_header
 
-log_step "Step 1: Updating dependencies"
+log_step "Step 1: Updating packages"
 pkg up -y
 
 log_step "Step 2: Updating dependencies"
 pkg install python ffmpeg curl wget deno -y
 pip install -U --no-deps yt-dlp[default] spotdl gallery-dl
 
-log_step "Step 3: Configuring script"
+log_step "Step 3: Updating script"
 termux-setup-storage -y
 mkdir -p "$INSTALL_DIR"
 
-if [ -f "$INSTALL_PATH" ]; then
-    rm -f "$INSTALL_PATH"
-fi
+# Download to a temp file first, so a failed download never
+# leaves the user without a working script.
+TMP_FILE="$(mktemp)"
+trap 'rm -f "$TMP_FILE"' EXIT
 
-if curl -fLo "$INSTALL_PATH" "$SCRIPT_URL"; then
-    chmod +x "$INSTALL_PATH"
-else
-    echo -e "${RED} [!] Failed, please try again.${NC}"
+if ! curl -fLo "$TMP_FILE" "$SCRIPT_URL"; then
+    echo -e "${RED} [!] Download failed. Existing script left untouched.${NC}"
     exit 1
 fi
+
+if [ ! -s "$TMP_FILE" ]; then
+    echo -e "${RED} [!] Downloaded file is empty. Aborting.${NC}"
+    exit 1
+fi
+
+# Back up the current version before replacing it.
+if [ -f "$INSTALL_PATH" ]; then
+    cp -f "$INSTALL_PATH" "$INSTALL_PATH.bak"
+fi
+
+chmod +x "$TMP_FILE"
+mv -f "$TMP_FILE" "$INSTALL_PATH"
+trap - EXIT
 
 log_step "Step 4: Ensuring $INSTALL_DIR is on PATH"
 PATH_LINE='export PATH="$HOME/bin:$PATH"'

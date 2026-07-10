@@ -42,12 +42,24 @@ log_step "Step 3: Configuring script"
 termux-setup-storage -y
 mkdir -p "$INSTALL_DIR"
 
-if curl -fLo "$INSTALL_PATH" "$SCRIPT_URL"; then
-    chmod +x "$INSTALL_PATH"
-else
-    echo -e "${RED} [!] Failed, please try again.${NC}"
+# Download to a temp file first so a failed/partial download never
+# leaves a broken script at the install path.
+TMP_FILE="$(mktemp)"
+trap 'rm -f "$TMP_FILE"' EXIT
+
+if ! curl -fLo "$TMP_FILE" "$SCRIPT_URL"; then
+    echo -e "${RED} [!] Download failed, please try again.${NC}"
     exit 1
 fi
+
+if [ ! -s "$TMP_FILE" ]; then
+    echo -e "${RED} [!] Downloaded file is empty. Aborting.${NC}"
+    exit 1
+fi
+
+chmod +x "$TMP_FILE"
+mv -f "$TMP_FILE" "$INSTALL_PATH"
+trap - EXIT
 
 log_step "Step 4: Adding $INSTALL_DIR to PATH"
 PATH_LINE='export PATH="$HOME/bin:$PATH"'
