@@ -43,6 +43,27 @@ This command will:
 
 > After installation, restart Termux or run `source ~/.bashrc` for the `PATH` change to take effect.
 
+## Updating
+
+To update to the latest version, run:
+
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/haiueom/termux-url-opener/main/update.sh)"
+```
+
+This command will:
+
+1. Update your package lists and upgrade installed packages.
+2. Upgrade the Python dependencies (`yt-dlp`, `spotdl`, `gallery-dl`).
+3. Download the latest `termux-url-opener` script into `~/bin`.
+4. Ensure `~/bin` is on your `PATH`.
+
+The update is safe: the new script is downloaded to a temporary file and only replaces your current one once the download succeeds. Your previous version is kept as `~/bin/termux-url-opener.bak`, so you can roll back if needed:
+
+```bash
+mv ~/bin/termux-url-opener.bak ~/bin/termux-url-opener
+```
+
 ## Usage
 Once installed, you can share an URL to Termux App or use the command line to run the script.
 
